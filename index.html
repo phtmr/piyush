@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanjana </title>
+
+<style>
+{ box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #1b2735, #05060a);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* Stars */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+/* Shooting star */
+.shooting-star {
+  position: absolute;
+  width: 160px;
+  height: 2px;
+  background: linear-gradient(90deg, white, transparent);
+  animation: shoot 1.1s linear forwards;
+}
+
+@keyframes shoot {
+  from { transform: translate(0,0); opacity: 1; }
+  to { transform: translate(360px,360px); opacity: 0; }
+}
+
+.card {
+  width: 92%;
+  max-width: 380px;
+  background: rgba(255,255,255,0.09);
+  border-radius: 24px;
+  padding: 26px;
+  text-align: center;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 55px rgba(255,120,180,0.4);
+  z-index: 2;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+  transition: 0.5s;
+}
+
+.glow {
+  text-shadow: 0 0 10px #ff8fb1, 0 0 25px #ff4b7d;
+}
+
+p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  opacity: 0.96;
+  transition: 0.5s;
+}
+
+img {
+  width: 0;
+  opacity: 0;
+  border-radius: 18px;
+  margin: 16px auto;
+  transition: 1.2s;
+  box-shadow: 0 0 25px rgba(255,150,200,0.5);
+}
+
+.buttons {
+  margin-top: 26px;
+  position: relative;
+  height: 120px;
+}
+
+button {
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  position: absolute;
+  cursor: pointer;
+}
+
+#yesBtn {
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg,#ff416c,#ff4b2b);
+  color: white;
+}
+
+#noBtn {
+  background: #555;
+  color: white;
+  left: 10%;
+  top: 60px;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1 id="title">Sanjana, will you be my Valentine? </h1>
+
+  <img id="photo" src="us.jpg">
+
+  <p id="message">
+    You became my favorite part of every day <br>
+    I don’t promise perfection,<br>
+    but I promise my heart 
+  </p>
+
+  <div class="buttons">
+    <button id="yesBtn">Yes </button>
+    <button id="noBtn">No </button>
+  </div>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<audio id="music" src="sajde.mp3"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+/* Stars */
+for (let i = 0; i < 90; i++) {
+  const s = document.createElement("div");
+  s.className = "star";
+  s.style.left = Math.random()*100 + "%";
+  s.style.top = Math.random()*100 + "%";
+  document.body.appendChild(s);
+}
+
+/* Shooting stars */
+function shootingStar() {
+  const star = document.createElement("div");
+  star.className = "shooting-star";
+  star.style.left = Math.random()*60 + "%";
+  star.style.top = Math.random()*30 + "%";
+  document.body.appendChild(star);
+  setTimeout(() => star.remove(), 1100);
+}
+
+/* Buttons */
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const music = document.getElementById("music");
+const title = document.getElementById("title");
+const message = document.getElementById("message");
+const photo = document.getElementById("photo");
+
+function moveNo() {
+  noBtn.style.left = Math.random()*70 + "%";
+  noBtn.style.top = Math.random()*80 + "px";
+}
+
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+
+yesBtn.addEventListener("click", () => {
+  music.play();
+
+  confetti({
+    particleCount: 240,
+    spread: 120,
+    origin: { y: 0.6 }
+  });
+
+  title.innerText = "Sanjana ";
+  title.classList.add("glow");
+
+  photo.style.width = "100%";
+  photo.style.opacity = "1";
+
+  message.innerHTML =
+    "Sanjana, you didn’t just say yes…<br><br>\
+     you changed something in me forever <br><br>\
+     In your smile I found comfort,<br>\
+     in your presence I found peace ";
+
+  setInterval(shootingStar, 650);
+
+  setTimeout(() => {
+    message.innerHTML =
+      "From stolen glances to endless conversations,<br>\
+       every version of life feels better with you <br><br>\
+       If love is a feeling, you are mine.<br>\
+       And if forever is a place…<br>\
+       I hope it’s with you ";
+  }, 4000);
+});
+</script>
+
+</body>
+</html>
